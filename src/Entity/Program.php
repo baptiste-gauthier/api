@@ -38,7 +38,7 @@ class Program
 
     /**
      * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="programs")
-     * @ORM\JoinTable(name="like")
+     * @ORM\JoinTable(name="fav")
      */
     private $favorite;
 
