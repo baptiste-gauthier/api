@@ -34,7 +34,7 @@ class AppFixtures extends Fixture
             $program->setName('program '.$i);
             $program->setDescription($faker->text());
             $program->setHostedBy($faker->name());
-            $program->getCategories($category(rand(1,5)));
+            $program->addCategory($category);
             $manager->persist($program);
         }
         // create 20 users! Bam!
@@ -44,7 +44,7 @@ class AppFixtures extends Fixture
             $user->setSurname($faker->name());
             $user->setEmail($faker->email());
             $user->setPassword($faker->password());
-            $user->getPrograms($program(rand(1,20)));
+            $user->addProgram($program);
             $manager->persist($user);
         }
         // create 20 Showss Bam!
@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
             $show->setDateStart($faker->dateTime());
             $show->setDateEnd($faker->dateTime());
             $show->setDateCreated($faker->dateTime());
-            $show->getProgramId($program(rand(1,20)));
+            $show->setProgramId($program);
             $manager->persist($show);
         }
 
