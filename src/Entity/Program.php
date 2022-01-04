@@ -6,12 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ProgramRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=ProgramRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:Program']]
+)]
 class Program
 {
     /**
@@ -19,38 +22,45 @@ class Program
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['read:Program'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:Category' , 'read:Program' , 'read:Show' , 'read:User'])]
     private $name;
 
     /**
      * @ORM\Column(type="text")
      */
+    #[Groups(['read:Program'])]
     private $description;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:Program'])]
     private $hosted_by;
 
     /**
      * @ORM\ManyToMany(targetEntity=Users::class, inversedBy="programs")
      * @ORM\JoinTable(name="fav")
      */
+    #[Groups(['read:Program'])]
     private $favorite;
 
     /**
      * @ORM\OneToMany(targetEntity=Show::class, mappedBy="program_id")
      */
+    #[Groups(['read:Program'])]
     private $shows;
 
     /**
      * @ORM\ManyToMany(targetEntity=Category::class, mappedBy="belong")
      * @ORM\JoinTable(name="belong")
      */
+    #[Groups(['read:Program'])]
     private $categories;
 
     public function __construct()

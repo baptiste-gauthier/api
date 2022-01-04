@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UsersRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,7 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=UsersRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:User']]
+)]
 class Users
 {
     /**
@@ -19,32 +22,38 @@ class Users
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['read:User','read:Program'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:User' , 'read:Program'])]
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:User'])]
     private $surname;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:User'])]
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:User'])]
     private $password;
 
     /**
      * @ORM\ManyToMany(targetEntity=Program::class, mappedBy="favorite")
      * @ORM\JoinTable(name="fav")
      */
+    #[Groups(['read:User'])]
     private $programs;
 
     public function __construct()

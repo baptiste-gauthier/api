@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\ShowRepository;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity(repositoryClass=ShowRepository::class)
  * @ORM\Table(name="`show`")
  */
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:Show']]
+)]
 class Show
 {
     /**
@@ -20,46 +23,55 @@ class Show
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['read:Show'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:Program' , 'read:Show'])]
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
+    #[Groups(['read:Show'])]
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['read:Show'])]
     private $date_start;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['read:Show'])]
     private $date_end;
 
     /**
      * @ORM\Column(type="datetime")
      */
+    #[Groups(['read:Show'])]
     private $date_created;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['read:Show'])]
     private $hosted_by;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
+    #[Groups(['read:Show'])]
     private $guest;
 
     /**
      * @ORM\ManyToOne(targetEntity=Program::class, inversedBy="shows")
      */
+    #[Groups(['read:Show'])]
     private $program_id;
 
     public function getId(): ?int

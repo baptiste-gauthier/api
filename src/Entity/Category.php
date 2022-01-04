@@ -6,12 +6,15 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
  */
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:Category']]
+)]
 class Category
 {
     /**
@@ -19,22 +22,26 @@ class Category
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
+    #[Groups(['read:Category'])]
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
+    #[Groups(['read:Category','read:Program'])]
     private $name;
 
     /**
      * @ORM\Column(type="text", nullable=true)
      */
+    #[Groups(['read:Category'])]
     private $description;
 
     /**
      * @ORM\ManyToMany(targetEntity=Program::class, inversedBy="categories")
      * @ORM\JoinTable(name="belong")
      */
+    #[Groups(['read:Category'])]
     private $belong;
 
     public function __construct()
